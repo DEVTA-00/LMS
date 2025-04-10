@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { assets } from '../../assets/assets'
 import { Link } from 'react-router-dom'
 import { useClerk, UserButton, useUser } from '@clerk/clerk-react'
@@ -13,8 +13,36 @@ const Navbar = () => {
   const {openSignIn} = useClerk()
   const {user} = useUser()
 
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+
   return (
-    <div className={`flex items-center justify-between px-4 sm:px-10 md:px-14 lg:px-36 border-b border-gray-500 py-4 ${isCourseListPage ? 'bg-white' : 'bg-cyan-100/70'}`}>
+
+    // normal navbar not sticky
+
+    // <div className={`flex items-center justify-between px-4 sm:px-10 md:px-14 lg:px-36 border-b border-gray-500 py-4 ${isCourseListPage ? 'bg-white' : 'bg-cyan-100/70'}`}>
+
+    // sticky but not professional
+
+    // <div className={`sticky top-0 z-50 flex items-center justify-between px-4 sm:px-10 md:px-14 lg:px-36 border-b border-gray-500 py-4 ${isCourseListPage ? 'bg-white' : 'bg-cyan-100/70'}`}>
+
+    // sticky and professional
+    <div className={`sticky top-0 z-50 flex items-center justify-between px-4 sm:px-10 md:px-14 lg:px-36 border-b border-gray-500 py-4 transition-all duration-300 ${
+      isCourseListPage
+        ? isScrolled ? 'bg-white shadow-md' : 'bg-white'
+        : isScrolled ? 'bg-cyan-200 shadow-md' : 'bg-cyan-100/70'
+    }`}>
+    
+
       <img onClick={()=> navigate('/')} src={assets.logo} alt="Logo" className='w-28lg:w-32 cursor-pointer' />
       <div className='hidden md:flex items-center gap-5 text-gray-500'>
         <div className='flex items-center gap-5'>
