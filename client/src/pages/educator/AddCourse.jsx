@@ -334,33 +334,59 @@ const AddCourse = () => {
     }
   };
 
+  // const addLecture = () => {
+  //   setChapters(prev =>
+  //     prev.map(chapter => {
+  //       if (chapter.chapterId === currentChapterId) {
+  //         const newLecture = {
+  //           lectureTitle: lectureDetails.lectureTitle,
+  //           lectureDuration: lectureDetails.lectureDuration,
+  //           lectureLink: lectureDetails.lectureUrl, // FIXED
+  //           isFree: lectureDetails.isPreviewFree,   // FIXED
+  //           lectureOrder: chapter.chapterContent.length > 0
+  //             ? chapter.chapterContent.slice(-1)[0].lectureOrder + 1
+  //             : 1,
+  //           lectureId: uniqid(),
+  //         };
+  //         chapter.chapterContent.push(newLecture);
+  //       }
+  //       return chapter;
+  //     })
+  //   );
+  //   setShowPopup(false);
+  //   setLectureDetails({
+  //     lectureTitle: '',
+  //     lectureDuration: '',
+  //     lectureUrl: '',
+  //     isPreviewFree: false,
+  //   });
+  // };
+
   const addLecture = () => {
-    setChapters(prev =>
-      prev.map(chapter => {
-        if (chapter.chapterId === currentChapterId) {
-          const newLecture = {
-            lectureTitle: lectureDetails.lectureTitle,
-            lectureDuration: lectureDetails.lectureDuration,
-            lectureLink: lectureDetails.lectureUrl, // FIXED
-            isFree: lectureDetails.isPreviewFree,   // FIXED
-            lectureOrder: chapter.chapterContent.length > 0
-              ? chapter.chapterContent.slice(-1)[0].lectureOrder + 1
-              : 1,
-            lectureId: uniqid(),
-          };
-          chapter.chapterContent.push(newLecture);
-        }
-        return chapter;
-      })
-    );
+    if (!lectureDetails.lectureTitle || !lectureDetails.lectureDuration || !lectureDetails.lectureUrl) {
+      alert("Please fill all lecture fields.");
+      return;
+    }
+  
+    const updatedContent = [...courseData.courseContent];
+    updatedContent[selectedChapterIndex].chapterContent.push({
+      lectureTitle: lectureDetails.lectureTitle,
+      lectureDuration: lectureDetails.lectureDuration,
+      lectureUrl: lectureDetails.lectureUrl,
+      isPreviewFree: lectureDetails.isPreviewFree,
+    });
+  
+    setCourseData({ ...courseData, courseContent: updatedContent });
+  
     setShowPopup(false);
     setLectureDetails({
-      lectureTitle: '',
-      lectureDuration: '',
-      lectureUrl: '',
+      lectureTitle: "",
+      lectureDuration: "",
+      lectureUrl: "",
       isPreviewFree: false,
     });
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
