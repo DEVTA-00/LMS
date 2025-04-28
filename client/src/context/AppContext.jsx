@@ -45,7 +45,6 @@ export const AppContextProvider = (props)=>{
         if(user.publicMetadata.role === 'educator'){
             setIsEducator(true)
         }
-        console.log(user)
         try {
             const token = await getToken();
 
